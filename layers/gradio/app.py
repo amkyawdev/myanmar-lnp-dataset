@@ -256,8 +256,21 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             if not message:
                 return "", history or []
             response = chat_response(message)
-            history = history or []
-            history.append([message, response])
+            # Convert to Gradio 6 format: list of dicts with role and content
+            if history is None:
+                history = []
+            # If history is in old format [[user, bot]], convert to new format
+            if history and isinstance(history[0], list):
+                new_history = []
+                for msg in history:
+                    if len(msg) >= 1:
+                        new_history.append({"role": "user", "content": msg[0]})
+                    if len(msg) >= 2:
+                        new_history.append({"role": "assistant", "content": msg[1]})
+                history = new_history
+            # Append new messages
+            history.append({"role": "user", "content": message})
+            history.append({"role": "assistant", "content": response})
             return "", history
         
         send_btn.click(respond, [msg, chatbot], [msg, chatbot])
