@@ -243,7 +243,8 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
                 label="Your Message",
                 placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
                 lines=2
-            )
+            ),
+            submit_btn="Send"
         )
     
     with gr.Tab("✍️ Text Generate"):
