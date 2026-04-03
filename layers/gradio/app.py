@@ -230,22 +230,39 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
     with gr.Tab("💬 Chat"):
         gr.Markdown("### 💬 Myanmar Chat Bot")
         
-        def respond_fn(message, history):
-            if not message:
-                return ""
-            response = chat_response(message)
-            return response
+        with gr.Row():
+            with gr.Column(scale=8):
+                chatbot = gr.Chatbot(
+                    label="Chat History",
+                    height=400
+                )
+            with gr.Column(scale=1):
+                pass
         
-        gr.ChatInterface(
-            fn=respond_fn,
-            title="",
-            textbox=gr.Textbox(
-                label="Your Message",
-                placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
-                lines=2
-            ),
-            submit_btn=gr.Button("Send", variant="primary")
-        )
+        with gr.Row():
+            with gr.Column(scale=8):
+                msg = gr.Textbox(
+                    label="Your Message",
+                    placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
+                    lines=2,
+                    show_label=True
+                )
+            with gr.Column(scale=1):
+                send_btn = gr.Button("Send", variant="primary")
+        
+        clear_btn = gr.Button("🗑️ Clear")
+        
+        def respond(message, history):
+            if not message:
+                return "", history or []
+            response = chat_response(message)
+            history = history or []
+            history.append([message, response])
+            return "", history
+        
+        send_btn.click(respond, [msg, chatbot], [msg, chatbot])
+        msg.submit(respond, [msg, chatbot], [msg, chatbot])
+        clear_btn.click(lambda: [], None, chatbot)
     
     with gr.Tab("✍️ Text Generate"):
         gr.Markdown("### Myanmar Text Generation")
