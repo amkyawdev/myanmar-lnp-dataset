@@ -256,21 +256,37 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             if not message:
                 return "", history or []
             response = chat_response(message)
-            # Convert to Gradio 6 format: list of dicts with role and content
+            # Full Gradio 6 format with metadata and content structure
             if history is None:
                 history = []
-            # If history is in old format [[user, bot]], convert to new format
+            # Convert old format if needed
             if history and isinstance(history[0], list):
                 new_history = []
                 for msg in history:
                     if len(msg) >= 1:
-                        new_history.append({"role": "user", "content": msg[0]})
+                        new_history.append({
+                            "role": "user",
+                            "metadata": None,
+                            "content": [{"text": msg[0], "type": "text"}]
+                        })
                     if len(msg) >= 2:
-                        new_history.append({"role": "assistant", "content": msg[1]})
+                        new_history.append({
+                            "role": "assistant", 
+                            "metadata": None,
+                            "content": [{"text": msg[1], "type": "text"}]
+                        })
                 history = new_history
-            # Append new messages
-            history.append({"role": "user", "content": message})
-            history.append({"role": "assistant", "content": response})
+            # Append new messages in full format
+            history.append({
+                "role": "user",
+                "metadata": None,
+                "content": [{"text": message, "type": "text"}]
+            })
+            history.append({
+                "role": "assistant",
+                "metadata": None,
+                "content": [{"text": response, "type": "text"}]
+            })
             return "", history
         
         send_btn.click(respond, [msg, chatbot], [msg, chatbot])
