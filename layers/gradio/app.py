@@ -239,9 +239,9 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
                 msg = gr.Textbox(
                     label="Your Message",
                     placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
-                    lines=2,
-                    submit_button=True
+                    lines=2
                 )
+                submit_chat = gr.Button("Send", variant="primary")
             with gr.Column(scale=1):
                 clear_btn = gr.Button("🗑️ Clear", variant="secondary")
         
@@ -252,6 +252,7 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             chat_history.append([message, response])
             return "", chat_history
         
+        submit_chat.click(respond, [msg, chatbot], [msg, chatbot])
         msg.submit(respond, [msg, chatbot], [msg, chatbot])
         clear_btn.click(lambda: [], None, chatbot)
         
