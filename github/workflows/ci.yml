@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+    
+    - name: Run tests
+      run: pytest tests/ -v
+    
+    - name:上传 coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    
+    - name: Run flake8
+      run: |
+        pip install flake8
+        flake8 api/ layers/ tests/ --max-line-length=100
+    
+    - name: Run black
+      run: |
+        pip install black
+        black --check api/ layers/ tests/ --line-length=100
