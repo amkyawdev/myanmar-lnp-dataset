@@ -230,6 +230,7 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
         gr.Markdown("### 💬 Myanmar Chat Bot")
         
         chatbot = gr.Chatbot(
+            value=[],  # Initialize with empty list
             label="Chat History",
             height=400
         )
@@ -246,15 +247,13 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             if not message:
                 return "", history
             response = chat_response(message)
-            # Ensure history is a list
-            if history is None:
-                history = []
+            history = history or []
             history.append([message, response])
             return "", history
         
         send_btn.click(respond, [msg, chatbot], [msg, chatbot])
         msg.submit(respond, [msg, chatbot], [msg, chatbot])
-        clear_btn.click(lambda: None, None, chatbot, queue=False)
+        clear_btn.click(lambda: [], None, chatbot)
         
         gr.Examples(
             examples=[
