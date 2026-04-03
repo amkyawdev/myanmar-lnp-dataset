@@ -186,7 +186,7 @@ Distributed under the MIT License. See LICENSE for more information.
 
 📧 Contact
 
-AMKYAW AI – @amkyaw – amkyaw@example.com
+AMKYAW AI – @amkyaw – https://amkyaw-ai.vercel.app
 
 Project Link: https://github.com/yourusername/Myanmar-LNP-Dataset
 
