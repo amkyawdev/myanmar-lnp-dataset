@@ -234,27 +234,27 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             height=400
         )
         
-        with gr.Row():
-            with gr.Column(scale=3):
-                msg = gr.Textbox(
-                    label="Your Message",
-                    placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
-                    lines=2
-                )
-                submit_chat = gr.Button("Send", variant="primary")
-            with gr.Column(scale=1):
-                clear_btn = gr.Button("🗑️ Clear", variant="secondary")
+        msg = gr.Textbox(
+            label="Your Message",
+            placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
+            lines=2
+        )
+        send_btn = gr.Button("Send", variant="primary")
+        clear_btn = gr.Button("🗑️ Clear")
         
-        def respond(message, chat_history):
+        def respond(message, history):
             if not message:
-                return "", chat_history
+                return "", history
             response = chat_response(message)
-            chat_history.append([message, response])
-            return "", chat_history
+            # Ensure history is a list
+            if history is None:
+                history = []
+            history.append([message, response])
+            return "", history
         
-        submit_chat.click(respond, [msg, chatbot], [msg, chatbot])
+        send_btn.click(respond, [msg, chatbot], [msg, chatbot])
         msg.submit(respond, [msg, chatbot], [msg, chatbot])
-        clear_btn.click(lambda: [], None, chatbot)
+        clear_btn.click(lambda: None, None, chatbot, queue=False)
         
         gr.Examples(
             examples=[
