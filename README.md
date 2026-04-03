@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- Logo / SVG -->
-<img src="https://github.com/amkyawdev/myanmar-lnp-dataset/logo.svg" width="180" alt="AMKYAW AI Logo">
+![Myanmar LNP Logo](./logo.svg)
 
 # 🇲🇲 Myanmar-LNP Dataset
 
