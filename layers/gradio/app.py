@@ -1,4 +1,5 @@
 import gradio as gr
+from gradio.components import ChatMessage
 from datasets import load_dataset
 import pandas as pd
 import random
@@ -238,7 +239,6 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
         gr.ChatInterface(
             fn=respond_fn,
             title="",
-            chatbot=gr.Chatbot(height=400),
             textbox=gr.Textbox(
                 label="Your Message",
                 placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
