@@ -5,7 +5,7 @@ import random
 
 # Load datasets from Hugging Face - JSONL format for chat
 try:
-    dataset = load_dataset("amkyawdev/AmkyawDev-Dataset", trust_remote_code=True)
+    dataset = load_dataset("amkyawdev/AmkyawDev-Dataset")
     # Get labels from tags
     if "train" in dataset:
         train_data = dataset["train"]
@@ -28,7 +28,7 @@ chat_tags = []
 
 try:
     from datasets import load_dataset
-    chat_dataset = load_dataset("amkyawdev/AmkyawDev-Dataset", data_files="train.jsonl", trust_remote_code=True)
+    chat_dataset = load_dataset("amkyawdev/AmkyawDev-Dataset", data_files="train.jsonl")
     chat_data = list(chat_dataset["train"])
     
     # Extract user/assistant pairs from messages format
@@ -83,7 +83,7 @@ def chat_response(user_input):
 # Load text generation data - using JSONL (same as chat)
 text_gen_pairs = []
 try:
-    text_gen_dataset = load_dataset("amkyawdev/AmkyawDev-Dataset", data_files="train.jsonl", trust_remote_code=True)
+    text_gen_dataset = load_dataset("amkyawdev/AmkyawDev-Dataset", data_files="train.jsonl")
     text_gen_data = list(text_gen_dataset["train"])
     # Extract prompt/completion pairs for text generation
     for item in text_gen_data:
