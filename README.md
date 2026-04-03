@@ -3,14 +3,14 @@
 <!-- Logo / SVG -->
 <img src="https://raw.githubusercontent.com/amkyawdev/myanmar-lnp-dataset/main/logo.svg" width="180" alt="AMKYAW AI Logo">
 
-# 🇲🇲 Myanmar-LNP Dataset
+# 🇲🇲 AmkyawDev Dataset
 
-## *Drive Progress with Intelligent Systems*
+## *Myanmar Language NLP Dataset*
 
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Hugging Face](https://img.shields.io/badge/🤗-Datasets-orange)](https://huggingface.co/datasets)
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/Myanmar-LNP-Dataset)](https://github.com/yourusername/Myanmar-LNP-Dataset/stargazers)
+[![Dataset](https://img.shields.io/badge/Dataset-v1.0-green.svg)](https://huggingface.co/datasets/amkyawdev/AmkyawDev-Dataset)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 </div>
@@ -26,13 +26,59 @@
 
 ---
 
+## 📊 Dataset
+
+### Files
+
+| File | Samples | Description |
+|------|---------|-------------|
+| train.csv | 30 | Training data |
+| validation.csv | 18 | Validation data |
+| test.csv | 18 | Test data |
+
+### Label Categories
+
+| ID | Label | Description |
+|----|-------|-------------|
+| 0 | news | News & journalism |
+| 1 | social | Social media content |
+| 2 | literary | Literary works |
+| 3 | legal | Legal documents |
+| 4 | medical | Medical/health |
+| 5 | technical | Technical/scientific |
+| 6 | religious | Religious texts |
+| 7 | educational | Educational materials |
+| 8 | dialogue | Conversational text |
+| 9 | other | Miscellaneous |
+
+### Usage (Hugging Face)
+
+```python
+from datasets import load_dataset
+
+# Load from Hugging Face
+dataset = load_dataset("amkyawdev/AmkyawDev-Dataset")
+
+# Access splits
+train_data = dataset["train"]
+for example in train_data:
+    print(example["text"], example["label_name"])
+```
+
+```bash
+# Download using Hugging Face CLI
+hf download amkyawdev/AmkyawDev-Dataset --local-dir ./data
+```
+
+---
+
 ## 🏗️ Project Structure (Modular Architecture)
 
 ```bash
 Myanmar-LNP-Dataset/
 ├── api/                 # Core logic (data loader, preprocess, models)
 ├── layers/              # Presentation layer (CLI, Streamlit, Gradio)
-├── data/                # Raw & processed data (gitignored)
+├── data/                # CSV data files
 ├── notebooks/           # EDA & prototyping
 ├── checkpoints/         # Model weights (gitignored)
 ├── config/              # YAML config files

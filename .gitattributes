@@ -1,0 +1,5 @@
+# Git LFS configuration for Myanmar LNP Dataset
+# Track large CSV files
+*.csv filter=lfs diff=lfs merge=lfs -text
+*.jsonl filter=lfs diff=lfs merge=lfs -text
+*.parquet filter=lfs diff=lfs merge=lfs -text
