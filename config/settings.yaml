@@ -1,0 +1,46 @@
+# Default config settings
+project:
+  name: "myanmar-lnp-dataset"
+  version: "0.1.0"
+
+# Data paths
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  external_dir: "data/external"
+
+# Model checkpoints
+checkpoints:
+  best_model_dir: "checkpoints/best_model"
+  logs_dir: "checkpoints/logs"
+
+# Model training defaults
+training:
+  batch_size: 32
+  learning_rate: 0.001
+  num_epochs: 10
+  seed: 42
+  device: "cuda"  # cuda or cpu
+
+# Preprocessing
+preprocessing:
+  max_length: 512
+  min_length: 3
+  lowercase: false  # Myanmar doesn't use lowercase
+
+# Augmentation
+augmentation:
+  synonym_prob: 0.15
+  back_translation_prob: 0.1
+
+# Vectorization
+vectorizer:
+  method: "tfidf"  # tfidf, word2vec, or bert
+  max_features: 10000
+  ngram_range: [1, 2]
+
+# Classification
+classification:
+  num_classes: 10
+  test_size: 0.2
+  val_size: 0.1

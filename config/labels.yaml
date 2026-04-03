@@ -1,0 +1,79 @@
+# Myanmar LNP Category Labels
+# Each category represents a type of natural language processing task
+
+labels:
+  # Text Classification Categories
+  - id: 0
+    name: "news"
+    mm_name: "သတင်း"
+    description: "News and journalism articles"
+    
+  - id: 1
+    name: "social"
+    mm_name: "လူမှုကွပ်ကဲပ်ပါပံုး"
+    description: "Social media content"
+    
+  - id: 2
+    name: "literary"
+    mm_name: "စာပီပြင်ငန်း"
+    description: "Literary works and creative writing"
+    
+  - id: 3
+    name: "legal"
+    mm_name: "ဥပဒေ"
+    description: "Legal documents and contracts"
+    
+  - id: 4
+    name: "medical"
+    mm_name: "ဆေးပါး"
+    description: "Medical and health related text"
+    
+  - id: 5
+    name: "technical"
+    mm_name: "နည်းပါးပညာ"
+    description: "Technical and scientific text"
+    
+  - id: 6
+    name: "religious"
+    mm_name: "ဘာသာ"
+    description: "Religious and spiritual texts"
+    
+  - id: 7
+    name: "educational"
+    mm_name: "ပါမိတ်ကား"
+    description: "Educational materials"
+    
+  - id: 8
+    name: "dialogue"
+    mm_name: "စကားပါတ်ခွဲ"
+    description: "Conversational and dialogue text"
+    
+  - id: 9
+    name: "other"
+    mm_name: "အခြား"
+    description: "Other miscellaneous text"
+
+# Label mapping utilities
+label_to_id:
+  news: 0
+  social: 1
+  literary: 2
+  legal: 3
+  medical: 4
+  technical: 5
+  religious: 6
+  educational: 7
+  dialogue: 8
+  other: 9
+
+id_to_label:
+  0: "news"
+  1: "social"
+  2: "literary"
+  3: "legal"
+  4: "medical"
+  5: "technical"
+  6: "religious"
+  7: "educational"
+  8: "dialogue"
+  9: "other"
