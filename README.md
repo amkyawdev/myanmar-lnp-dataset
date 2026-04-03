@@ -1,4 +1,13 @@
-# Myanmar LNP Dataset
+#  🇲🇲  Myanmar LNP Dataset
+
+```
+████████╗███████╗ █████╗ ████████╗███████╗███████╗██████╗ 
+╚══██╔══╝██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔════╝██╔══██╗
+   ██║   █████╗  ███████║   ██║   █████╗  █████╗ ██████╔╝
+   ██║   ██╔══╝  ██╔══██║   ██║   ██╔══╝  ██╔══╝ ██╔══██╗
+   ██║   ███████╗██║  ██║   ██║   ███████╗███████╗██║  ██║
+   ╚═╝   ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═════╝╚═════╝╚═╝  ╚═╝
+```
 
 A comprehensive toolkit for Myanmar (Burmese) language Natural Language Processing, including data loading, preprocessing, augmentation, and text classification models.
 
