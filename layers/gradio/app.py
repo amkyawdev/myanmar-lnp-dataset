@@ -229,15 +229,10 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
     with gr.Tab("💬 Chat"):
         gr.Markdown("### 💬 Myanmar Chat Bot")
         
-        with gr.Row():
-            with gr.Column(scale=3):
-                chatbot = gr.Chatbot(
-                    label="Chat History",
-                    height=400,
-                    bubble_full_width=False
-                )
-            with gr.Column(scale=1):
-                pass
+        chatbot = gr.Chatbot(
+            label="Chat History",
+            height=400
+        )
         
         with gr.Row():
             with gr.Column(scale=3):
