@@ -32,14 +32,15 @@ try:
     chat_dataset = load_dataset("amkyawdev/AmkyawDev-Dataset", data_files="train.jsonl")
     chat_data = list(chat_dataset["train"])
     
-    # Extract user/assistant pairs from messages format
+    # Extract user/assistant pairs from messages format - keep original text
     for item in chat_data:
         messages = item.get("messages", [])
         if len(messages) >= 3:
             user_msg = next((m["content"] for m in messages if m["role"] == "user"), "")
             assistant_msg = next((m["content"] for m in messages if m["role"] == "assistant"), "")
             if user_msg and assistant_msg:
-                chat_pairs.append((user_msg.lower(), assistant_msg))
+                # Keep original text (not lowercase)
+                chat_pairs.append((user_msg, assistant_msg))
                 chat_tags.append(item.get("tags", "other"))
     
     print(f"Loaded {len(chat_pairs)} chat pairs from dataset")
@@ -70,7 +71,8 @@ def chat_response(user_input):
     
     # Try to find matching response from dataset
     for pattern, response in chat_pairs:
-        if pattern in user_lower or user_lower in pattern:
+        pattern_lower = pattern.lower()
+        if pattern_lower in user_lower or user_lower in pattern_lower:
             return response
     
     # Fallback to keyword matching
