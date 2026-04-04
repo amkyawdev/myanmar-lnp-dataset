@@ -133,12 +133,40 @@ def predict(text):
 
 # CSS Styles
 css = """
-.container { max-width: 1200px; margin: auto; }
-.header { text-align: center; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white; margin-bottom: 20px; }
-.tab-header { font-size: 18px; font-weight: bold; }
-.examples-box { background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0; }
-.button-primary { background: #667eea !important; color: white !important; border: none !important; padding: 10px 20px !important; border-radius: 5px !important; }
-.button-secondary { background: #764ba2 !important; color: white !important; border: none !important; }
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+.header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+}
+.tab-header {
+    font-size: 18px;
+    font-weight: bold;
+}
+.examples-box {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+.button-primary {
+    background: #667eea !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 5px !important;
+}
+.button-secondary {
+    background: #764ba2 !important;
+    color: white !important;
+    border: none !important;
+}
 """
 
 # Gradio UI with better design
@@ -159,7 +187,12 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
         
         with gr.Row():
             with gr.Column(scale=2):
-                input_text = gr.Textbox(label="📝 Enter Myanmar Text", placeholder="မြန်မာစာရေးသားပါ...", lines=4, show_label=True)
+                input_text = gr.Textbox(
+                    label="📝 Enter Myanmar Text",
+                    placeholder="မြန်မာစာရေးသားပါ... (e.g., သတင်းသည်သင်တန်းစာသင်ပါး)",
+                    lines=4,
+                    show_label=True
+                )
                 submit_btn = gr.Button("🔍 Predict", variant="primary", size="lg")
             
             with gr.Column(scale=1):
@@ -167,6 +200,7 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
         
         submit_btn.click(predict, input_text, output)
         
+        # Examples Section
         gr.Markdown("### 💡 Examples")
         gr.Examples(
             examples=[
@@ -179,6 +213,13 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
             ],
             inputs=input_text,
         )
+        
+        # Info Box
+        gr.Markdown("""
+        <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin-top: 10px;">
+            <b>📌 Info:</b> ဤအပိုင်းသည် မြန်မာစာကို ခွဲခြားပါဝင်ပါ။ ဥပမာ - greeting, coding, culture, food, health, math, travel စသည်ဖြင့်။
+        </div>
+        """)
     
     with gr.Tab("💬 Chat"):
         gr.Markdown("### 💬 Myanmar Chat Bot")
@@ -186,7 +227,12 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
         
         with gr.Row():
             with gr.Column(scale=3):
-                chatbot = gr.Chatbot(label="💭 Chat History", height=400, show_label=True, bubble_full_width=False)
+                chatbot = gr.Chatbot(
+                    label="💭 Chat History",
+                    height=400,
+                    show_label=True,
+                    bubble_full_width=False,
+                )
             with gr.Column(scale=1):
                 gr.Markdown("""
                 <div style="background: #f0f0f0; padding: 15px; border-radius: 8px;">
@@ -198,7 +244,12 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
         
         with gr.Row():
             with gr.Column(scale=3):
-                msg = gr.Textbox(label="✍️ Your Message", placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...", lines=2, show_label=True)
+                msg = gr.Textbox(
+                    label="✍️ Your Message",
+                    placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
+                    lines=2,
+                    show_label=True
+                )
             with gr.Column(scale=1):
                 with gr.Row():
                     send_btn = gr.Button("📤 Send", variant="primary", size="lg")
@@ -218,6 +269,7 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
         msg.submit(respond, [msg, chatbot], [msg, chatbot])
         clear_btn.click(lambda: [], None, chatbot)
         
+        # Chat Examples
         gr.Markdown("### 💡 Quick Questions")
         gr.Examples(
             examples=[
@@ -237,15 +289,26 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
         
         with gr.Row():
             with gr.Column(scale=1):
-                gen_prompt = gr.Textbox(label="📝 Prompt (အစ)", placeholder="သတင်း... သို့မဟုတ် ကဗျာ...", lines=4, show_label=True)
+                gen_prompt = gr.Textbox(
+                    label="📝 Prompt (အစ)",
+                    placeholder="သတင်း... သို့မဟုတ် ကဗျာ...",
+                    lines=4,
+                    show_label=True
+                )
                 gen_btn = gr.Button("✨ Generate", variant="primary", size="lg")
             
             with gr.Column(scale=1):
-                gen_output = gr.Textbox(label="📄 Generated Text", lines=6, interactive=False, show_label=True)
+                gen_output = gr.Textbox(
+                    label="📄 Generated Text",
+                    lines=6,
+                    interactive=False,
+                    show_label=True
+                )
         
         gen_btn.click(generate_text, gen_prompt, gen_output)
         gen_prompt.submit(generate_text, gen_prompt, gen_output)
         
+        # Examples
         gr.Markdown("### 💡 Examples")
         gr.Examples(
             examples=[
@@ -258,6 +321,13 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
             ],
             inputs=gen_prompt,
         )
+        
+        # Info Box
+        gr.Markdown("""
+        <div style="background: #f0e8ff; padding: 15px; border-radius: 8px; margin-top: 10px;">
+            <b>📌 Info:</b> ဤအပိုင်းသည် မြန်မာစာ ထုတ်လုပ်ပါဝင်ပါ။ Prompt ပါးပါး ရေးပါ။
+        </div>
+        """)
     
     # Footer
     gr.Markdown("""
