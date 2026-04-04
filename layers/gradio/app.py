@@ -3,8 +3,6 @@ from gradio.components import ChatMessage
 from datasets import load_dataset
 import pandas as pd
 import random
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 # Load datasets from Hugging Face - JSONL format for chat
@@ -50,25 +48,7 @@ except Exception as e:
     chat_tags = []
 
 
-# Load AmkyawDev-LLM-V3 Model
-print("Loading AmkyawDev-LLM-V3 model...")
-try:
-    model_name = "amkyawdev/AmkyawDev-LLM-V3"
-    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype=torch.float16,
-        device_map="auto",
-        trust_remote_code=True
-    )
-    print("✅ Model loaded successfully!")
-except Exception as e:
-    print(f"Error loading model: {e}")
-    model = None
-    tokenizer = None
-
-
-# Fallback responses
+# Fallback responses (with corrected Myanmar words)
 fallback_responses = {
     "သတင်း": "သတင်းသည်သင်တန်းစာသင်ပါး။ နိုင်ငံတော်သမိုင်းနဲ့ရေးသားပါ။ ကမ္ဘာနှင့် အလယ်ပိုင်းတွင် အရေးကြီးသည့် အချက်များ ပါဝင်ပါ။",
     "ကဗျာ": "မြန်မာကဗျာ ရေးလိုက်ပါ။ အိပ်မက်မှာ ပါ။ အကျယ်ပြန့်စွာ ရှိပါ။",
@@ -83,82 +63,29 @@ fallback_responses = {
 
 
 def chat_response(user_input):
-    """Chat response using LLM model"""
+    """Chat response using dataset data and fallback"""
     if not user_input or len(user_input.strip()) == 0:
         return "ပါသည်ကို ရေးပါ။"
 
-    # Try using LLM model first
-    if model is not None and tokenizer is not None:
-        try:
-            prompt = f"""<|im_start|>system
-သင်သည် မြန်မာစာကျွမ်းကျင်သော AI အကူအညီပါ။
-<|im_end|>
-<|im_start|>user
-{user_input}
-<|im_end|>
-<|im_start|>assistant
-"""
-            inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-            outputs = model.generate(
-                **inputs,
-                max_new_tokens=256,
-                temperature=0.7,
-                top_p=0.9,
-                do_sample=True
-            )
-            response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-            # Extract only assistant response
-            if "<|im_start|>assistant" in response:
-                response = response.split("<|im_start|>assistant")[-1].strip()
-            return response
-        except Exception as e:
-            print(f"LLM error: {e}")
-    
-    # Fallback to keyword matching
+
     user_lower = user_input.lower()
     for pattern, response in chat_pairs:
         if pattern.lower() in user_lower or user_lower in pattern.lower():
             return response
 
+
     for key, response in fallback_responses.items():
         if key in user_lower:
             return response
+
 
     return "Amkyaw Ai သည် Myanmar NLP ပါဝင်သည့် အက်ပလီကေးရှင်း ဖြစ်ပါတယ်။ ရေးသားမှုနေပါသည်။"
 
 
 def generate_text(prompt):
-    """Text generation based on prompt"""
+    """Simple text generation based on prompt"""
     if not prompt or len(prompt.strip()) == 0:
         return "ပါသည်ကို ရေးပါ။"
-    
-    # Try using LLM model
-    if model is not None and tokenizer is not None:
-        try:
-            prompt_formatted = f"""<|im_start|>system
-သင်သည် မြန်မာစာထုတ်လုပ်သော AI ဖြစ်ပါ။
-<|im_end|>
-<|im_start|>user
-{prompt}
-<|im_end|>
-<|im_start|>assistant
-"""
-            inputs = tokenizer(prompt_formatted, return_tensors="pt").to(model.device)
-            outputs = model.generate(
-                **inputs,
-                max_new_tokens=256,
-                temperature=0.7,
-                top_p=0.9,
-                do_sample=True
-            )
-            response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-            if "<|im_start|>assistant" in response:
-                response = response.split("<|im_start|>assistant")[-1].strip()
-            return response
-        except Exception as e:
-            print(f"LLM error: {e}")
-    
-    # Fallback responses
     if "သတင်း" in prompt:
         return "သတင်းသည်သင်တန်းစာသင်ပါး။ နိုင်ငံတော်သမိုင်းနဲ့ရေးသားပါ။ ကမ္ဘာနှင့် အလယ်ပိုင်းတွင် အရေးကြီးသည့် အချက်များ ပါဝင်ပါ။"
     elif "ကဗျာ" in prompt:
@@ -183,7 +110,7 @@ def simple_classify(text):
         "coding": ["python", "javascript", "html", "css", "java", "code", "ကုဒ်"],
         "culture": ["ရိုးရာ", "ပွဲ", "သင်္ကြန်", "တန်ဆောင်", "လက်ဝဲ"],
         "food": ["အစာ", "ဆန်", "မတ်", "မုန်", "ရှမ်း"],
-        "health": ["ဆေး", "ု", "ကျန်း", "စိတ်", "ချောင်း"],
+        "health": ["ဆေး", "ကု", "ကျန်း", "စိတ်", "ချောင်း"],
         "economy": ["ငွေ", "တန်ဖိုး", "ဘဏ်", "လဲ"],
         "math": ["ပါ", "နှုန်း", "သင်္ချာ", "ပွဲ"],
         "travel": ["ခရီး", "ရန်ကုန်", "လည်း", "သွား", "ပါ"]
@@ -221,13 +148,14 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
     gr.Markdown("""
     <div class="header">
         <h1>🇲🇲 AmkyawDev NLP</h1>
-        <p>Powered by AmkyawDev-LLM-V3 (Qwen2.5-1.5B)</p>
-        <p style="font-size: 14px;">Myanmar Language AI - Classification, Chat & Text Generation</p>
+        <p>Myanmar Language AI - Classification, Chat & Text Generation</p>
+        <p style="font-size: 14px;">Powered by AmkyawDev Dataset</p>
     </div>
     """)
     
     with gr.Tab("📊 Classification"):
         gr.Markdown("### 📊 Myanmar Text Classification")
+        gr.Markdown("မြန်မာစာရေးသားပါ... ပါးပါး ခွဲခြားပါ။")
         
         with gr.Row():
             with gr.Column(scale=2):
@@ -254,7 +182,7 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
     
     with gr.Tab("💬 Chat"):
         gr.Markdown("### 💬 Myanmar Chat Bot")
-        gr.Markdown("**Model: AmkyawDev-LLM-V3**")
+        gr.Markdown("မြန်မာစာဖြင့် ပါးပါး ပါတ်ပါ။")
         
         with gr.Row():
             with gr.Column(scale=3):
@@ -264,8 +192,7 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
                 <div style="background: #f0f0f0; padding: 15px; border-radius: 8px;">
                     <b>💡 Tips:</b><br>
                     - မြန်မာစာဖြင့် ရေးပါ။<br>
-                    - ပါးပါး ပါတ်ပါ။<br>
-                    - LLM သုံးပါ။
+                    - ပါးပါး ပါတ်ပါ။
                 </div>
                 """)
         
@@ -306,7 +233,7 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
     
     with gr.Tab("✍️ Text Generate"):
         gr.Markdown("### ✍️ Myanmar Text Generation")
-        gr.Markdown("**Model: AmkyawDev-LLM-V3**")
+        gr.Markdown("မြန်မာစာ ထုတ်လုပ်ပါ။")
         
         with gr.Row():
             with gr.Column(scale=1):
@@ -336,9 +263,9 @@ with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
     gr.Markdown("""
     ---
     ### 📚 Resources
-    - **Model:** [AmkyawDev-LLM-V3](https://huggingface.co/amkyawdev/AmkyawDev-LLM-V3)
     - **Dataset:** [AmkyawDev-Dataset](https://huggingface.co/datasets/amkyawdev/AmkyawDev-Dataset)
     - **GitHub:** [amkyawdev/myanmar-lnp-dataset](https://github.com/amkyawdev/myanmar-lnp-dataset)
+    - **Space:** [amkyawdev-nlp](https://huggingface.co/spaces/amkyawdev/amkyawdev-nlp)
     ---
     Made with ❤️ by AmkyawDev
     """)
