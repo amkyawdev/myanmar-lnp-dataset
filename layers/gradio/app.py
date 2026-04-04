@@ -131,17 +131,77 @@ def predict(text):
     return {"text": text[:100] + "..." if len(text) > 100 else text, "label": label, "confidence": confidence}
 
 
-# Gradio UI
-with gr.Blocks(title="AmkyawDev NLP") as demo:
-    gr.Markdown("## 🇲🇲 AmkyawDev NLP - Myanmar Language AI")
+# CSS Styles
+css = """
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+.header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+}
+.tab-header {
+    font-size: 18px;
+    font-weight: bold;
+}
+.examples-box {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+.button-primary {
+    background: #667eea !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 5px !important;
+}
+.button-secondary {
+    background: #764ba2 !important;
+    color: white !important;
+    border: none !important;
+}
+"""
+
+# Gradio UI with better design
+with gr.Blocks(title="AmkyawDev NLP", css=css, theme=gr.themes.Soft()) as demo:
+    
+    # Header
+    gr.Markdown("""
+    <div class="header">
+        <h1>🇲🇲 AmkyawDev NLP</h1>
+        <p>Myanmar Language AI - Classification, Chat & Text Generation</p>
+        <p style="font-size: 14px;">Powered by AmkyawDev Dataset</p>
+    </div>
+    """)
     
     with gr.Tab("📊 Classification"):
-        input_text = gr.Textbox(label="Enter Myanmar Text", lines=5)
-        output = gr.JSON(label="Prediction Result")
-        submit_btn = gr.Button("Predict")
+        gr.Markdown("### 📊 Myanmar Text Classification")
+        gr.Markdown("မြန်မာစာရေးသားပါ... ပါးပါး ခွဲခြားပါ။")
+        
+        with gr.Row():
+            with gr.Column(scale=2):
+                input_text = gr.Textbox(
+                    label="📝 Enter Myanmar Text",
+                    placeholder="မြန်မာစာရေးသားပါ... (e.g., သတင်းသည်သင်တန်းစာသင်ပါး)",
+                    lines=4,
+                    show_label=True
+                )
+                submit_btn = gr.Button("🔍 Predict", variant="primary", size="lg")
+            
+            with gr.Column(scale=1):
+                output = gr.JSON(label="📊 Prediction Result")
+        
         submit_btn.click(predict, input_text, output)
         
-        # Examples
+        # Examples Section
+        gr.Markdown("### 💡 Examples")
         gr.Examples(
             examples=[
                 ["သတင်းသည်သင်တန်းစာသင်ပါး။"],
@@ -153,21 +213,48 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             ],
             inputs=input_text,
         )
+        
+        # Info Box
+        gr.Markdown("""
+        <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin-top: 10px;">
+            <b>📌 Info:</b> ဤအပိုင်းသည် မြန်မာစာကို ခွဲခြားပါဝင်ပါ။ ဥပမာ - greeting, coding, culture, food, health, math, travel စသည်ဖြင့်။
+        </div>
+        """)
     
     with gr.Tab("💬 Chat"):
         gr.Markdown("### 💬 Myanmar Chat Bot")
-        chatbot = gr.Chatbot(
-            label="Chat History",
-            examples=[
-                ["နေကောင်းလား?"],
-                ["သတင်းပါသည်။"],
-                ["ကဗျာ ရေးပါ။"],
-                ["ဆေးကုသပါ။"],
-            ]
-        )
-        msg = gr.Textbox(label="Your Message", placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...", lines=2)
-        send_btn = gr.Button("Send")
-        clear_btn = gr.Button("Clear")
+        gr.Markdown("မြန်မာစာဖြင့် ပါးပါး ပါတ်ပါ။")
+        
+        with gr.Row():
+            with gr.Column(scale=3):
+                chatbot = gr.Chatbot(
+                    label="💭 Chat History",
+                    height=400,
+                    show_label=True,
+                    bubble_full_width=False,
+                )
+            with gr.Column(scale=1):
+                gr.Markdown("""
+                <div style="background: #f0f0f0; padding: 15px; border-radius: 8px;">
+                    <b>💡 Tips:</b><br>
+                    - မြန်မာစာဖြင့် ရေးပါ။<br>
+                    - ပါးပါး ပါတ်ပါ။
+                </div>
+                """)
+        
+        with gr.Row():
+            with gr.Column(scale=3):
+                msg = gr.Textbox(
+                    label="✍️ Your Message",
+                    placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...",
+                    lines=2,
+                    show_label=True
+                )
+            with gr.Column(scale=1):
+                with gr.Row():
+                    send_btn = gr.Button("📤 Send", variant="primary", size="lg")
+                    clear_btn = gr.Button("🗑️ Clear")
+        
         def respond(message, history):
             if not message:
                 return "", history or []
@@ -177,18 +264,52 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             history.append({"role": "user", "content": [{"text": message, "type": "text"}]})
             history.append({"role": "assistant", "content": [{"text": response, "type": "text"}]})
             return "", history
+        
         send_btn.click(respond, [msg, chatbot], [msg, chatbot])
         msg.submit(respond, [msg, chatbot], [msg, chatbot])
         clear_btn.click(lambda: [], None, chatbot)
+        
+        # Chat Examples
+        gr.Markdown("### 💡 Quick Questions")
+        gr.Examples(
+            examples=[
+                ["နေကောင်းလား?"],
+                ["သတင်းပါသည်။"],
+                ["ကဗျာ ရေးပါ။"],
+                ["ဆေးကုသပါ။"],
+                ["ဥပဒေ ပါ။"],
+                ["ပညာ သင်ပါ။"],
+            ],
+            inputs=msg,
+        )
     
     with gr.Tab("✍️ Text Generate"):
-        gen_prompt = gr.Textbox(label="Prompt (အစ)", placeholder="သတင်း... သို့မဟုတ် ကဗျာ...", lines=3)
-        gen_output = gr.Textbox(label="Generated Text", lines=5, interactive=False)
-        gen_btn = gr.Button("Generate")
+        gr.Markdown("### ✍️ Myanmar Text Generation")
+        gr.Markdown("မြန်မာစာ ထုတ်လုပ်ပါ။")
+        
+        with gr.Row():
+            with gr.Column(scale=1):
+                gen_prompt = gr.Textbox(
+                    label="📝 Prompt (အစ)",
+                    placeholder="သတင်း... သို့မဟုတ် ကဗျာ...",
+                    lines=4,
+                    show_label=True
+                )
+                gen_btn = gr.Button("✨ Generate", variant="primary", size="lg")
+            
+            with gr.Column(scale=1):
+                gen_output = gr.Textbox(
+                    label="📄 Generated Text",
+                    lines=6,
+                    interactive=False,
+                    show_label=True
+                )
+        
         gen_btn.click(generate_text, gen_prompt, gen_output)
         gen_prompt.submit(generate_text, gen_prompt, gen_output)
         
         # Examples
+        gr.Markdown("### 💡 Examples")
         gr.Examples(
             examples=[
                 ["သတင်း ဖတ်ပါ။"],
@@ -196,9 +317,28 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
                 ["ဆေးကုသပါ။"],
                 ["ဥပဒေ ပါ။"],
                 ["ပညာ သင်ပါ။"],
+                ["ဘာသာ ပါ။"],
             ],
             inputs=gen_prompt,
         )
+        
+        # Info Box
+        gr.Markdown("""
+        <div style="background: #f0e8ff; padding: 15px; border-radius: 8px; margin-top: 10px;">
+            <b>📌 Info:</b> ဤအပိုင်းသည် မြန်မာစာ ထုတ်လုပ်ပါဝင်ပါ။ Prompt ပါးပါး ရေးပါ။
+        </div>
+        """)
+    
+    # Footer
+    gr.Markdown("""
+    ---
+    ### 📚 Resources
+    - **Dataset:** [AmkyawDev-Dataset](https://huggingface.co/datasets/amkyawdev/AmkyawDev-Dataset)
+    - **GitHub:** [amkyawdev/myanmar-lnp-dataset](https://github.com/amkyawdev/myanmar-lnp-dataset)
+    - **Space:** [amkyawdev-nlp](https://huggingface.co/spaces/amkyawdev/amkyawdev-nlp)
+    ---
+    Made with ❤️ by AmkyawDev
+    """)
 
 
 if __name__ == "__main__":
