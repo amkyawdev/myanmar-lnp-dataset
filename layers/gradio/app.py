@@ -59,6 +59,7 @@ fallback_responses = {
     "ဘာသာ": "ဘာသာစာသင်၊ ပါ။ သတင်း ပါ။",
     "စကား": "စကားပါတ်ခွဲ ပါ။ ဖြေးချက်ပီး ပါ။",
     "မိတ်ဆွေ": "မိတ်ဆွေများနဲ့ စကားပါတ်ပီး။ ပါတ်ပီး ပါ။",
+    "နေကောင်း": "နေကောင်းပါတယ်ခင်ဗျာ။ ဘာများကူညီပေးရမလဲ။",
 }
 
 # Chat function
@@ -204,6 +205,8 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
     """)
     
     with gr.Tab("📊 Classification"):
+        gr.Markdown("### 📊 Myanmar Text Classification")
+        
         with gr.Row():
             with gr.Column(scale=1):
                 input_text = gr.Textbox(
@@ -252,7 +255,7 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             with gr.Column(scale=1):
                 send_btn = gr.Button("Send", variant="primary")
         
-        clear_btn = gr.Button("🗑️ Clear")
+        clear_btn = gr.Button("Clear")
         
         def respond(message, history):
             if not message:
@@ -296,7 +299,7 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
         clear_btn.click(lambda: [], None, chatbot)
     
     with gr.Tab("✍️ Text Generate"):
-        gr.Markdown("### Myanmar Text Generation")
+        gr.Markdown("### ✍️ Myanmar Text Generation")
         
         with gr.Row():
             with gr.Column(scale=1):
