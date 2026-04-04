@@ -82,7 +82,7 @@ def chat_response(user_input):
             return response
     
     # Default response
-    return "နော်ကားဝီး သည် မြန်မာ NLP ပါတ်ပီး အက်ပလီကေးရှင်း ဖြစ်ပါတယ်။ ပါသည်ကို ပြင်ငန်း ရှိပါ။"
+    return "နော်ကားဝီး သည် မြန်မာ NLP ပါတ်ပီး အက်ပလီကေးရှင်း ဖြစ်ပါတယ်။ ပါသည်ကို ပြင်ရန်ရှိပါသည်"
 
 # Load text generation data - using JSONL (same as chat)
 text_gen_pairs = []
@@ -155,7 +155,7 @@ def chat_response(user_input):
             return response
     
     # Default response
-    return "နော်ကားဝီး သည် မြန်မာ NLP ပါတ်ပီး အက်ပလီကေးရှင်း ဖြစ်ပါတယ်။ ပါသည်ကို ပြင်ငန်း ရှိပါ။"
+    return "နော်ကားဝီး သည် မြန်မာ NLP ပါတ်ပီး အက်ပလီကေးရှင်း ဖြစ်ပါတယ်။ ပါသည်ကို ပြင်ရန်ရှိပါသည်"
 
 # Text generation function
 def generate_text(prompt):
