@@ -324,12 +324,25 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
             ],
             inputs=gen_prompt,
         )
-    
-    gr.Markdown("""
-    ---
-    📚 **Dataset:** [AmkyawDev-Dataset](https://huggingface.co/datasets/amkyawdev/AmkyawDev-Dataset)  
-    💻 **GitHub:** [amkyawdev/myanmar-lnp-dataset](https://github.com/amkyawdev/myanmar-lnp-dataset)
-    """)
+        
+        # Dataset Examples Section
+        gr.Markdown("### 📚 Dataset စာအုပ်များ")
+        
+        if chat_pairs:
+            examples_list = []
+            for i, (q, a) in enumerate(chat_pairs[:10]):
+                examples_list.append([q])
+            gr.Examples(
+                examples=examples_list,
+                inputs=gen_prompt,
+                label="Dataset မှ စာများ"
+            )
+        
+        gr.Markdown("""
+        ---
+        📚 **Dataset:** [AmkyawDev-Dataset](https://huggingface.co/datasets/amkyawdev/AmkyawDev-Dataset)  
+        💻 **GitHub:** [amkyawdev/myanmar-lnp-dataset](https://github.com/amkyawdev/myanmar-lnp-dataset)
+        """)
 
 if __name__ == "__main__":
     demo.launch()
