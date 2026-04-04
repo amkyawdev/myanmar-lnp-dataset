@@ -140,10 +140,32 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
         output = gr.JSON(label="Prediction Result")
         submit_btn = gr.Button("Predict")
         submit_btn.click(predict, input_text, output)
+        
+        # Examples
+        gr.Examples(
+            examples=[
+                ["သတင်းသည်သင်တန်းစာသင်ပါး။"],
+                ["မိတ်ဆွေများနဲ့ စကား ပြောပါ။"],
+                ["ကဗျာ ရေးလိုက်ပါ။"],
+                ["ဥပဒေစာတွေ ရှိပါ။"],
+                ["ဆေးပပါး ဘာသာပါ။"],
+                ["ပညာ သင်လိုက်ပါ။"],
+            ],
+            inputs=input_text,
+        )
     
     with gr.Tab("💬 Chat"):
-        chatbot = gr.Chatbot()
-        msg = gr.Textbox(label="Your Message", lines=2)
+        gr.Markdown("### 💬 Myanmar Chat Bot")
+        chatbot = gr.Chatbot(
+            label="Chat History",
+            examples=[
+                ["နေကောင်းလား?"],
+                ["သတင်းပါသည်။"],
+                ["ကဗျာ ရေးပါ။"],
+                ["ဆေးကုသပါ။"],
+            ]
+        )
+        msg = gr.Textbox(label="Your Message", placeholder="မြန်မာဘာသာဖြင့် ရေးပါ...", lines=2)
         send_btn = gr.Button("Send")
         clear_btn = gr.Button("Clear")
         def respond(message, history):
@@ -160,11 +182,23 @@ with gr.Blocks(title="AmkyawDev NLP") as demo:
         clear_btn.click(lambda: [], None, chatbot)
     
     with gr.Tab("✍️ Text Generate"):
-        gen_prompt = gr.Textbox(label="Prompt (အစ)", lines=3)
+        gen_prompt = gr.Textbox(label="Prompt (အစ)", placeholder="သတင်း... သို့မဟုတ် ကဗျာ...", lines=3)
         gen_output = gr.Textbox(label="Generated Text", lines=5, interactive=False)
         gen_btn = gr.Button("Generate")
         gen_btn.click(generate_text, gen_prompt, gen_output)
         gen_prompt.submit(generate_text, gen_prompt, gen_output)
+        
+        # Examples
+        gr.Examples(
+            examples=[
+                ["သတင်း ဖတ်ပါ။"],
+                ["ကဗျာ ရေးပါ။"],
+                ["ဆေးကုသပါ။"],
+                ["ဥပဒေ ပါ။"],
+                ["ပညာ သင်ပါ။"],
+            ],
+            inputs=gen_prompt,
+        )
 
 
 if __name__ == "__main__":
