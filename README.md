@@ -32,9 +32,9 @@
 
 | File | Samples | Description |
 |------|---------|-------------|
-| train.csv | 30 | Training data |
-| validation.csv | 18 | Validation data |
-| test.csv | 18 | Test data |
+| train.jsonl | 9000 | Training data |
+| validation.jsonl | 9000 | Validation data |
+| test.jsonl | 9000 | Test data |
 
 ### Label Categories
 
